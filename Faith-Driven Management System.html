@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Faith-Driven – Church Management System</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:opsz,wght@7..72,500;7..72,700&display=swap">
+<style>
+:root{--bg:#f2f6fa;--surface:#fff;--ink:#14213d;--muted:#4a5568;--brand:#1f4e79;--brand-ink:#fff;--gold:#8a5a00;--goldbg:#fdf1d6;--line:#c9d4e0;--ok:#146c43;--danger:#a4262c;--fs:1rem;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1726;--surface:#17233a;--ink:#eef3f9;--muted:#b4c0d0;--brand:#8ec1f0;--brand-ink:#0e1726;--gold:#f2c46d;--goldbg:#33290f;--line:#33455f;--ok:#6fd6a0;--danger:#ff9a9f}}
+:root[data-theme="dark"]{--bg:#0e1726;--surface:#17233a;--ink:#eef3f9;--muted:#b4c0d0;--brand:#8ec1f0;--brand-ink:#0e1726;--gold:#f2c46d;--goldbg:#33290f;--line:#33455f;--ok:#6fd6a0;--danger:#ff9a9f}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--fs)/1.6 "Atkinson Hyperlegible",system-ui,sans-serif}
+h1,h2,h3{font-family:Literata,Georgia,serif;line-height:1.25;margin:0 0 .5rem}
+h1{font-size:1.6rem}h2{font-size:1.4rem}h3{font-size:1.1rem}
+a,button,input,select,textarea{font:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.skip{position:absolute;left:-999px;top:0;background:var(--brand);color:var(--brand-ink);padding:.6rem 1rem;z-index:20}
+.skip:focus{left:0}
+header.top{background:var(--brand);color:var(--brand-ink);padding:.8rem 1rem;display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between}
+header.top h1{margin:0;font-size:1.3rem}.sub{display:block;font:400 .85rem "Atkinson Hyperlegible",sans-serif}footer{max-width:1000px;margin:0 auto;padding:1rem;text-align:center;color:var(--muted);border-top:1px solid var(--line)}.devo blockquote{margin:.5rem 0;padding-left:1rem;border-left:4px solid var(--gold);font-family:Literata,Georgia,serif;font-size:1.1em}
+.tools{display:flex;gap:.4rem;flex-wrap:wrap}
+.tools button{background:transparent;color:inherit;border:2px solid currentColor;border-radius:6px;padding:.3rem .7rem;cursor:pointer;min-height:44px}
+nav[aria-label="Main"]{background:var(--surface);border-bottom:1px solid var(--line);display:flex;gap:.25rem;overflow-x:auto;padding:.4rem .6rem}
+nav button{border:0;background:transparent;color:var(--ink);padding:.55rem .9rem;border-radius:8px;cursor:pointer;min-height:44px;white-space:nowrap}
+nav button[aria-current="page"]{background:var(--brand);color:var(--brand-ink);font-weight:700}
+nav button:hover{background:var(--goldbg)}
+nav button[aria-current="page"]:hover{background:var(--brand)}
+main{max-width:1000px;margin:0 auto;padding:1.2rem 1rem 3rem}
+.welcome{background:var(--goldbg);border-left:6px solid var(--gold);padding:1rem 1.2rem;border-radius:8px;margin-bottom:1.2rem}
+.welcome p{margin:.2rem 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.9rem;margin-bottom:1.2rem}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1rem}
+.stat b{display:block;font:700 1.9rem Literata,serif;color:var(--brand)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1.1rem;margin-bottom:1.2rem}
+form.f{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem;align-items:end}
+label{display:block;font-weight:700;margin-bottom:.2rem}
+input,select,textarea{width:100%;padding:.55rem .7rem;border:2px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);min-height:44px}
+textarea{min-height:90px}
+.hint{color:var(--muted);font-size:.9em}
+.btn{background:var(--brand);color:var(--brand-ink);border:2px solid var(--brand);border-radius:6px;padding:.5rem 1rem;cursor:pointer;font-weight:700;min-height:44px}
+.btn.alt{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.del{background:transparent;color:var(--danger);border-color:var(--danger)}
+.btn:hover{filter:brightness(1.1)}
+.err{color:var(--danger);font-weight:700;min-height:1.4em;margin:.4rem 0 0}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+caption{text-align:left;font-weight:700;padding-bottom:.4rem}
+th,td{text-align:left;padding:.55rem .6rem;border-bottom:1px solid var(--line)}
+th{background:var(--bg)}
+ul.list{list-style:none;margin:0;padding:0}
+ul.list li{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--line)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.9rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1rem;display:flex;flex-direction:column;gap:.5rem;justify-content:space-between}
+.chk{display:flex;align-items:center;gap:.6rem;padding:.4rem 0}
+.chk input{width:24px;height:24px;min-height:0}
+.chk label{margin:0;font-weight:400}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(1rem + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:.7rem 1.2rem;border-radius:8px;max-width:90vw;z-index:30}
+.toast:empty{display:none}
+.empty{color:var(--muted);padding:.8rem 0}
+.tag{display:inline-block;background:var(--goldbg);color:var(--gold);padding:.1rem .6rem;border-radius:99px;font-size:.85em;font-weight:700}
+@media (prefers-reduced-motion:no-preference){.view{animation:in .25s ease-out}@keyframes in{from{opacity:0}to{opacity:1}}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="top">
+  <h1><span aria-hidden="true">✝</span> Faith-Driven <span class="sub">Growing together in faith, hope and love</span></h1>
+</header>
+<nav aria-label="Main" id="nav"></nav>
+<main id="main" tabindex="-1"></main>
+<footer><strong>Our mission:</strong> to worship God, love our neighbours and serve our community.</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const VIEWS=[["dash","Home"],["members","Members"],["events","Events"],["attend","Attendance"],["giving","Giving"],["prayer","Prayer wall"]];
+const MIN=["Worship team","Youth","Children","Ushers","Hospitality","Outreach"];
+const VERSES=["Let us not give up meeting together, but encourage one another. – Hebrews 10:25","Carry each other’s burdens. – Galatians 6:2","How good and pleasant it is when God’s people live together in unity. – Psalm 133:1"];
+const DEV=[{ref:"Psalm 46:10",verse:"Be still, and know that I am God.",reflect:"Before the week’s tasks begin, take a quiet minute. Trust that God is at work in what you cannot control.",pray:"Lord, quiet my mind and steady my heart today. Amen."},{ref:"Philippians 4:6",verse:"Do not be anxious about anything, but in everything pray.",reflect:"Worry loses its grip when we hand it over in prayer. Name one concern and give it to God.",pray:"Father, I give you my worries. Give me your peace. Amen."},{ref:"1 John 4:19",verse:"We love because he first loved us.",reflect:"Our service to others flows from love we have already received. Who can you encourage today?",pray:"Jesus, love others through me today. Amen."}];
+const KEY="gf_cms_v2";
+const today=new Date();const iso=d=>d.toISOString().slice(0,10);
+const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return iso(d)};
+const seed=()=>({members:[],
+ events:[{id:1,title:"Sunday service",date:addDays(5),time:"09:00",place:"Main hall",rsvp:false},
+ {id:2,title:"Youth night",date:addDays(9),time:"18:30",place:"Youth centre",rsvp:false}],
+ gifts:[],
+ prayers:[{id:1,name:"Anonymous",text:"Please pray for my mother’s recovery after surgery.",count:3}],
+ attendance:{},next:10});
+let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!S)S=seed();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const R=n=>"R"+Number(n).toLocaleString("en-ZA",{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmt=d=>new Date(d+"T00:00").toLocaleDateString("en-ZA",{weekday:"short",day:"numeric",month:"short"});
+let view="dash",q="";
+const $=s=>document.querySelector(s);
+function toast(m){const t=$("#toast");t.textContent=m;clearTimeout(toast.h);toast.h=setTimeout(()=>t.textContent="",3500)}
+function nav(){$("#nav").innerHTML=VIEWS.map(([k,l])=>`<button type="button" data-go="${k}" ${k===view?'aria-current="page"':""}>${l}</button>`).join("")}
+function field(id,label,type="text",extra=""){return `<div><label for="${id}">${label}</label><input id="${id}" name="${id}" type="${type}" ${extra}></div>`}
+function sel(id,label,opts){return `<div><label for="${id}">${label}</label><select id="${id}">${opts.map(o=>`<option>${esc(o)}</option>`).join("")}</select></div>`}
+
+const V={
+dash(){
+ const up=S.events.filter(e=>e.date>=iso(today)).sort((a,b)=>a.date.localeCompare(b.date));
+ const mo=S.gifts.filter(g=>g.date.slice(0,7)===iso(today).slice(0,7)).reduce((a,g)=>a+g.amount,0);
+ const h=today.getHours();const g=h<12?"Good morning":h<18?"Good afternoon":"Good evening";
+ const v=VERSES[today.getDate()%VERSES.length];const dv=DEV[today.getDate()%DEV.length];
+ return `<section class="welcome"><h2>${g}, and welcome home</h2><p>${esc(v)}</p></section>
+ <section class="panel devo" aria-labelledby="dvh"><h2 id="dvh">Today’s devotion</h2><blockquote>${esc(dv.verse)}<br><cite>${esc(dv.ref)}</cite></blockquote><p>${esc(dv.reflect)}</p><p><strong>Prayer:</strong> ${esc(dv.pray)}</p><button class="btn" data-amen="1">Amen</button></section>
+ <h2>At a glance</h2><div class="grid">
+ <div class="stat"><b>${S.members.length}</b>Church members</div>
+ <div class="stat"><b>${up.length}</b>Upcoming events</div>
+ <div class="stat"><b>${R(mo)}</b>Given this month</div>
+ <div class="stat"><b>${S.prayers.length}</b>Prayer requests</div></div>
+ <section class="panel"><h2>Next up</h2>${up[0]?`<p><strong>${esc(up[0].title)}</strong><br>${fmt(up[0].date)} at ${esc(up[0].time)}, ${esc(up[0].place)}</p><button class="btn" data-go="events">See all events</button>`:`<p class="empty">No events planned yet. Add one on the Events page.</p>`}</section>
+ <section class="panel"><h2>Quick actions</h2><div class="tools"><button class="btn" data-go="members">Add a member</button><button class="btn alt" data-go="attend">Take attendance</button><button class="btn alt" data-go="prayer">Share a prayer request</button></div></section>`},
+members(){
+ const L=S.members.filter(m=>(m.name+m.email+m.ministry).toLowerCase().includes(q.toLowerCase()));
+ return `<h2>Members</h2><section class="panel" aria-labelledby="ah"><h3 id="ah">Add a member</h3>
+ <form class="f" id="fMem" novalidate>${field("mName","Full name *","text",'required autocomplete="off"')}${field("mEmail","Email *","email",'required')}${field("mPhone","Phone","tel")}${sel("mMin","Ministry",MIN)}<button class="btn" type="submit">Save member</button></form>
+ <p class="err" id="err" role="alert"></p></section>
+ <section class="panel"><label for="search">Search members</label><input id="search" type="search" value="${esc(q)}" placeholder="Name, email or ministry" style="max-width:360px">
+ <p class="hint" aria-live="polite">${L.length} of ${S.members.length} members shown</p>
+ <div class="wrap">${L.length?`<table><caption>Member directory</caption><thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Phone</th><th scope="col">Ministry</th><th scope="col">Action</th></tr></thead><tbody>${L.map(m=>`<tr><th scope="row">${esc(m.name)}</th><td>${esc(m.email)}</td><td>${esc(m.phone||"–")}</td><td><span class="tag">${esc(m.ministry)}</span></td><td><button class="btn del" data-delm="${m.id}" aria-label="Remove ${esc(m.name)}">Remove</button></td></tr>`).join("")}</tbody></table>`:`<p class="empty">No members match your search. Try a different name.</p>`}</div></section>`},
+events(){
+ const L=[...S.events].sort((a,b)=>a.date.localeCompare(b.date));
+ return `<h2>Events</h2><section class="panel"><h3>Plan an event</h3>
+ <form class="f" id="fEv" novalidate>${field("eTitle","Event name *","text","required")}${field("eDate","Date *","date","required")}${field("eTime","Time","time",'value="09:00"')}${field("ePlace","Place","text")}<button class="btn" type="submit">Add event</button></form><p class="err" id="err" role="alert"></p></section>
+ <section class="panel"><h3>Coming up</h3>${L.length?`<ul class="list">${L.map(e=>`<li><span><strong>${esc(e.title)}</strong><br><span class="hint">${fmt(e.date)} at ${esc(e.time)}${e.place?", "+esc(e.place):""}</span></span><span class="tools"><button class="btn ${e.rsvp?"":"alt"}" data-rsvp="${e.id}" aria-pressed="${e.rsvp}">${e.rsvp?"You’re going":"I’ll be there"}</button><button class="btn del" data-dele="${e.id}" aria-label="Delete ${esc(e.title)}">Delete</button></span></li>`).join("")}</ul>`:`<p class="empty">Nothing planned yet. Add your first event above.</p>`}</section>`},
+attend(){
+ const d=S._ad||iso(today);const cur=S.attendance[d]||[];
+ const recent=Object.keys(S.attendance).sort().reverse().slice(0,5);
+ return `<h2>Attendance</h2><section class="panel"><form id="fAt"><div style="max-width:260px">${field("aDate","Service date","date",`value="${d}"`)}</div>
+ <fieldset style="border:0;padding:0;margin:1rem 0"><legend><strong>Who is here?</strong></legend>${S.members.length?S.members.map(m=>`<div class="chk"><input type="checkbox" id="a${m.id}" value="${m.id}" ${cur.includes(m.id)?"checked":""}><label for="a${m.id}">${esc(m.name)}</label></div>`).join(""):`<p class="empty">Add members first to take attendance.</p>`}</fieldset>
+ <button class="btn" type="submit">Save attendance</button></form></section>
+ <section class="panel"><h3>Recent services</h3>${recent.length?`<ul class="list">${recent.map(k=>`<li><span>${fmt(k)}</span><strong>${S.attendance[k].length} present</strong></li>`).join("")}</ul>`:`<p class="empty">No attendance saved yet.</p>`}</section>`},
+giving(){
+ const tot=S.gifts.reduce((a,g)=>a+g.amount,0);const by={};S.gifts.forEach(g=>by[g.fund]=(by[g.fund]||0)+g.amount);
+ return `<h2>Giving</h2><p class="hint" style="max-width:60ch">Each of you should give what you have decided in your heart, not reluctantly. – 2 Corinthians 9:7</p><section class="panel"><h3>Record a gift</h3>
+ <form class="f" id="fGv" novalidate>${sel("gMem","Member",S.members.length?S.members.map(m=>m.name):["Anonymous"])}${field("gAmt","Amount (Rand) *","number",'min="1" step="0.01" required inputmode="decimal"')}${sel("gFund","Fund",["Tithe","Offering","Building fund","Missions"])}<button class="btn" type="submit">Record gift</button></form><p class="err" id="err" role="alert"></p></section>
+ <div class="grid"><div class="stat"><b>${R(tot)}</b>Total received</div>${Object.entries(by).map(([k,v])=>`<div class="stat"><b>${R(v)}</b>${esc(k)}</div>`).join("")}</div>
+ <section class="panel"><div class="wrap">${S.gifts.length?`<table><caption>Recent gifts</caption><thead><tr><th scope="col">Date</th><th scope="col">Member</th><th scope="col">Fund</th><th scope="col">Amount</th></tr></thead><tbody>${[...S.gifts].reverse().map(g=>`<tr><td>${fmt(g.date)}</td><td>${esc(g.member)}</td><td>${esc(g.fund)}</td><td>${R(g.amount)}</td></tr>`).join("")}</tbody></table>`:`<p class="empty">No gifts recorded yet.</p>`}</div></section>`},
+prayer(){
+ return `<h2>Prayer wall</h2><p class="hint" style="max-width:60ch">Share a need and let the community stand with you. Tap “I prayed” to show someone they are not alone.</p>
+ <section class="panel"><form id="fPr" novalidate><div style="max-width:360px">${field("pName","Your name (optional)")}</div><div style="margin-top:.8rem"><label for="pText">Prayer request *</label><textarea id="pText" required></textarea></div><p class="err" id="err" role="alert"></p><button class="btn" type="submit">Share request</button></form></section>
+ <div class="cards">${S.prayers.length?[...S.prayers].reverse().map(p=>`<article class="card"><p>${esc(p.text)}</p><p class="hint">From ${esc(p.name)}</p><div class="tools"><button class="btn alt" data-pray="${p.id}">I prayed</button><span class="tag" aria-live="polite">${p.count} praying</span></div></article>`).join(""):`<p class="empty">No requests yet. Be the first to share.</p>`}</div>`}
+};
+
+function render(focus){nav();$("#main").innerHTML=`<div class="view">${V[view]()}</div>`;document.title=VIEWS.find(v=>v[0]===view)[1]+" – Faith-Driven";if(focus)$("#main").focus()}
+function go(v){view=v;q="";render(true);scrollTo(0,0)}
+function err(m,id){const e=$("#err");e.textContent=m;if(id)$("#"+id).focus()}
+
+document.addEventListener("click",e=>{
+ const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.go)return go(b.dataset.go);
+ if(b.dataset.amen)return toast("Amen. Go in peace today.");
+ if(b.dataset.delm){const m=S.members.find(x=>x.id==b.dataset.delm);if(confirm("Remove "+m.name+" from the directory?")){S.members=S.members.filter(x=>x!==m);save();render();toast(m.name+" removed")}}
+ if(b.dataset.dele){S.events=S.events.filter(x=>x.id!=b.dataset.dele);save();render();toast("Event deleted")}
+ if(b.dataset.rsvp){const ev=S.events.find(x=>x.id==b.dataset.rsvp);ev.rsvp=!ev.rsvp;save();render();toast(ev.rsvp?"See you at "+ev.title+"!":"RSVP cancelled")}
+ if(b.dataset.pray){S.prayers.find(x=>x.id==b.dataset.pray).count++;save();render();toast("Thank you for praying")}
+});
+document.addEventListener("input",e=>{if(e.target.id==="search"){q=e.target.value;const p=e.target.selectionStart;render();const s=$("#search");s.focus();s.setSelectionRange(p,p)}});
+document.addEventListener("change",e=>{if(e.target.id==="aDate"){S._ad=e.target.value;render();$("#aDate").focus()}});
+document.addEventListener("submit",e=>{e.preventDefault();const f=e.target.id,v=i=>$("#"+i).value.trim();
+ if(f==="fMem"){if(!v("mName"))return err("Please enter the member’s full name.","mName");
+  if(!/^\S+@\S+\.\S+$/.test(v("mEmail")))return err("Please enter a valid email, like name@example.com.","mEmail");
+  S.members.push({id:S.next++,name:v("mName"),email:v("mEmail"),phone:v("mPhone"),ministry:v("mMin")});save();render();toast("Welcome to the family, "+S.members.at(-1).name+"!")}
+ if(f==="fEv"){if(!v("eTitle"))return err("Please name the event.","eTitle");if(!v("eDate"))return err("Please choose a date.","eDate");
+  S.events.push({id:S.next++,title:v("eTitle"),date:v("eDate"),time:v("eTime"),place:v("ePlace"),rsvp:false});save();render();toast("Event added")}
+ if(f==="fAt"){const d=v("aDate");S.attendance[d]=[...document.querySelectorAll("#fAt input[type=checkbox]:checked")].map(c=>+c.value);S._ad=d;save();render();toast("Attendance saved: "+S.attendance[d].length+" present")}
+ if(f==="fGv"){const a=parseFloat(v("gAmt"));if(!(a>0))return err("Please enter an amount greater than zero.","gAmt");
+  S.gifts.push({id:S.next++,member:v("gMem"),amount:a,fund:v("gFund"),date:iso(today)});save();render();toast("Gift recorded. Thank you for your generosity!")}
+ if(f==="fPr"){if(!v("pText"))return err("Please write your prayer request.","pText");
+  S.prayers.push({id:S.next++,name:v("pName")||"Anonymous",text:v("pText"),count:0});save();render();toast("Your request is shared. We’re praying with you.")}
+});
+
+/* accessibility tools */
+
+render();
+</script>
+</body>
+</html>
